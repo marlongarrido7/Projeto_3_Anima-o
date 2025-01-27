@@ -1,0 +1,46 @@
+.program pio_matrix
+
+.wrap_target
+    out x, 1          ; Envia 1 bit do FIFO para o registrador x
+    jmp !x do_zero    ; Se o bit for 0, pula para do_zero
+do_one:
+    set pins, 1 [3]   ; Envia um pulso de 3 ciclos para representar 1
+    jmp cont          ; Continua para o próximo bit
+do_zero:
+    set pins, 1 [1]   ; Envia um pulso de 1 ciclo para início de 0
+    set pins, 0 [1]   ; Finaliza o pulso curto para representar 0
+cont:
+    set pins, 0 [1]   ; Define o estado baixo entre bits
+.wrap
+
+% c-sdk {
+static inline void pio_matrix_program_init(PIO pio, uint sm, uint offset, uint pin)
+{
+    pio_sm_config c = pio_matrix_program_get_default_config(offset);
+
+    // Configura o pino para ser controlado pelo "set" no PIO
+    sm_config_set_set_pins(&c, pin, 1);
+
+    // Configura o GPIO para funcionar com o PIO
+    pio_gpio_init(pio, pin);
+
+    // Define a direção do pino como saída no PIO
+    pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, true);
+
+    // Define o clock do PIO para 8 MHz
+    float div = clock_get_hz(clk_sys) / 8000000.0;
+    sm_config_set_clkdiv(&c, div);
+
+    // Configura o FIFO para usar apenas TX (transmissão)
+    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_TX);
+
+    // Configura o shift à esquerda, com autopull e threshold de 24 bits
+    sm_config_set_out_shift(&c, false, true, 24);
+
+    // Inicializa a máquina de estado com a configuração e o programa
+    pio_sm_init(pio, sm, offset, &c);
+
+    // Habilita a máquina de estado
+    pio_sm_set_enabled(pio, sm, true);
+}
+%}
