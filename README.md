@@ -201,6 +201,6 @@ A função `executar_acao` associa cada tecla a uma ação específica (animaç�
 ## Contato
 
 Para mais informações ou dúvidas sobre este projeto, entre em contato com:
-Dr. Marlon da Silva Garrido - **UNIVASF**\
+Dr. Marlon da Silva Garrido - **CENAMB-PPGEA-UNIVASF**\
 Email: [marlon.garrido@univasf.edu.br](mailto\:marlon.garrido@univasf.edu.br)
 
