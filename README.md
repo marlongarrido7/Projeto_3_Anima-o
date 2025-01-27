@@ -44,9 +44,6 @@ Implementar uma solução que:
 ### Vídeo Demonstrativo
 [Uso na Placa Física e Simulação com VSCode e Wokwi](https://youtu.be/5EksPTAZwoc)
 
-[Uso na Placa Física e Simulação com VSCode e Wokwi](https://youtu.be/5EksPTAZwoc)
-[Simulação do Projeto no Wokwi](https://wokwi.com/projects/example-link) *(substituir pelo link real do projeto quando estiver disponível)*
-
 ---
 
 ## Funcionalidades do Projeto
