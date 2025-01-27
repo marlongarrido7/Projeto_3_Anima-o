@@ -182,14 +182,61 @@ void play_melody() {
 
 // Executa ações com base na tecla pressionada
 void executar_acao(char key, PIO pio, uint sm) {
+    uint32_t color; // Armazena a cor para cada ação
     switch (key) {
-        case '1':
+        case '1': // Exibe animação e toca a melodia
             play_buzzer(2, BUZZER_FREQ, 200); // Toca o buzzer duas vezes
             for (int i = 0; i < 5; i++) { // Exibe cada letra
                 render_letter(letter_frames[i], pio, sm);
             }
             play_melody(); // Toca a melodia
             break;
+
+        case 'A': // Desliga todos os LEDs
+            for (int i = 0; i < NUM_PIXELS; i++) {
+                pio_sm_put_blocking(pio, sm, 0); // Cor preta (desligado)
+            }
+            printf("Todos os LEDs foram desligados.\n");
+            break;
+
+        case 'B': // Acende todos os LEDs em azul com 100% de luminosidade
+            color = (0xFF << 8); // Azul em 100% (R=0, G=0, B=255)
+            for (int i = 0; i < NUM_PIXELS; i++) {
+                pio_sm_put_blocking(pio, sm, color);
+            }
+            printf("Todos os LEDs estão azuis (100%%).\n");
+            break;
+
+        case 'C': // Acende todos os LEDs em vermelho com 50% de luminosidade
+            color = (0x80 << 16); // Vermelho em 50% (R=128, G=0, B=0)
+            for (int i = 0; i < NUM_PIXELS; i++) {
+                pio_sm_put_blocking(pio, sm, color);
+            }
+            printf("Todos os LEDs estão vermelhos (50%%).\n");
+            break;
+
+        case 'D': // Acende todos os LEDs em verde com 50% de luminosidade
+            color = (0x80 << 24); // Verde em 50% (R=0, G=128, B=0)
+            for (int i = 0; i < NUM_PIXELS; i++) {
+                pio_sm_put_blocking(pio, sm, color);
+            }
+            printf("Todos os LEDs estão verdes (50%%).\n");
+            break;
+
+       case '#': // Acende todos os LEDs em branco com 20% de luminosidade
+            color = ((0x20 << 16) | (0x40 << 8) | 0x10); // Ajuste para RGB (vermelho: 32, verde: 64, azul: 16)
+            for (int i = 0; i < NUM_PIXELS; i++) {
+                pio_sm_put_blocking(pio, sm, color);
+            }
+            printf("Todos os LEDs estão brancos (20%%).\n");
+            break;
+
+        case '0': // Reinicia o microcontrolador no modo de gravação
+            printf("Reinicializando o microcontrolador para modo de gravação.\n");
+            sleep_ms(100); // Pausa breve antes do reinício
+            reset_usb_boot(0, 0); // Entra no modo de gravação
+            break;
+
         default:
             printf("Tecla não mapeada.\n");
             break;

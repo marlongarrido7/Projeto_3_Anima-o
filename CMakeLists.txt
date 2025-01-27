@@ -34,8 +34,8 @@ project(vogal C CXX ASM)
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
-# Certifique-se de que o arquivo principal está correto (ex: main.c)
-add_executable(vogal main.c)
+# Certifique-se de que o arquivo principal está correto
+add_executable(vogal vogal.c)
 
 # Nome e versão do programa
 pico_set_program_name(vogal "vogal")
@@ -59,9 +59,6 @@ target_include_directories(vogal PRIVATE
 
 # Process the .pio file and generate the corresponding header
 pico_generate_pio_header(vogal ${CMAKE_CURRENT_LIST_DIR}/vogal.pio)
-
-# Add any user requested libraries (se necessário, adicione aqui)
-target_link_libraries(vogal)
 
 # Garante a geração de arquivos .uf2 e outros formatos de saída
 pico_add_extra_outputs(vogal)
